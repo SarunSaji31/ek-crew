@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Files</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>EK CABIN CREW TRIPS GENERATOR</h1>
+    </header>
+    <div class="container">
+        <h2>Upload Inbound and Outbound Excel Files</h2>
+        <form action="/uploader" method="post" enctype="multipart/form-data">
+            <label for="inbound">Inbound File:</label>
+            <input type="file" name="inbound" id="inbound" required><br>
+            <label for="outbound">Outbound File:</label>
+            <input type="file" name="outbound" id="outbound" required><br>
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+</body>
+</html>

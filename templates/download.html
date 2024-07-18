@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Files</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>EK CABIN CREW TRIPS GENERATOR</h1>
+    </header>
+    <div class="container">
+        <h2>Download Processed Files</h2>
+        <a href="{{ url_for('download_file', filename=inbound_path) }}">Download Inbound File</a>
+        <a href="{{ url_for('download_file', filename=outbound_path) }}">Download Outbound File</a>
+    </div>
+</body>
+</html>
