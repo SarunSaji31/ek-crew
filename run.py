@@ -33,6 +33,7 @@ def custom_group_buildings(df, specific_groupings):
         other_buildings['NO OF UNITS'] = other_buildings['CREW'].apply(calculate_units)
         df_custom_grouped_list.extend(other_buildings.to_dict(orient='records'))
     df_custom_grouped = pd.DataFrame(df_custom_grouped_list).drop_duplicates(subset=['TIME', 'TO'])
+    df_custom_grouped.sort_values(by='TIME', inplace=True)
     return df_custom_grouped
 
 @app.route('/')
@@ -137,7 +138,8 @@ def uploader():
 def download_file(filename):
     return send_file(filename, as_attachment=True)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    from waitress import serve
     os.makedirs('uploads', exist_ok=True)
     os.makedirs('downloads', exist_ok=True)
-    app.run(debug=True)
+    serve(app, host="0.0.0.0", port=8080)
