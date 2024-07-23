@@ -105,7 +105,8 @@ def uploader():
 
             tomorrows_date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d-%b')
             df_custom_grouped_inbound['DATE'] = tomorrows_date
-            df_custom_grouped_inbound['FROM'] = 'EAC-C'
+            df_custom_grouped_inbound['FROM'] = df_custom_grouped_inbound['TO']
+            df_custom_grouped_inbound['TO'] = 'EAC-C'
             df_final_inbound = df_custom_grouped_inbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']].sort_values(by='TIME')
             inbound_output_path = os.path.join('downloads', 'cc_trip_rearranged_inbound.xlsx')
             df_final_inbound.to_excel(inbound_output_path, index=False)
