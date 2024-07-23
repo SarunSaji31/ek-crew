@@ -33,7 +33,6 @@ def custom_group_buildings(df, specific_groupings):
         other_buildings['NO OF UNITS'] = other_buildings['CREW'].apply(calculate_units)
         df_custom_grouped_list.extend(other_buildings.to_dict(orient='records'))
     df_custom_grouped = pd.DataFrame(df_custom_grouped_list).drop_duplicates(subset=['TIME', 'TO'])
-    df_custom_grouped.sort_values(by='TIME', inplace=True)
     return df_custom_grouped
 
 @app.route('/')
@@ -107,7 +106,7 @@ def uploader():
             tomorrows_date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d-%b')
             df_custom_grouped_inbound['DATE'] = tomorrows_date
             df_custom_grouped_inbound['FROM'] = 'EAC-C'
-            df_final_inbound = df_custom_grouped_inbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']]
+            df_final_inbound = df_custom_grouped_inbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']].sort_values(by='TIME')
             inbound_output_path = os.path.join('downloads', 'cc_trip_rearranged_inbound.xlsx')
             df_final_inbound.to_excel(inbound_output_path, index=False)
 
@@ -126,7 +125,7 @@ def uploader():
             df_custom_grouped_outbound['TIME'] = df_custom_grouped_outbound['TIME'].apply(lambda x: x.strftime('%H:%M'))
             df_custom_grouped_outbound['DATE'] = tomorrows_date
             df_custom_grouped_outbound['FROM'] = 'EAC-C'
-            df_final_outbound = df_custom_grouped_outbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']]
+            df_final_outbound = df_custom_grouped_outbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']].sort_values(by='TIME')
             outbound_output_path = os.path.join('downloads', 'cc_trip_rearranged_outbound.xlsx')
             df_final_outbound.to_excel(outbound_output_path, index=False)
 
@@ -138,8 +137,7 @@ def uploader():
 def download_file(filename):
     return send_file(filename, as_attachment=True)
 
-if __name__ == "__main__":
-    from waitress import serve
+if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
     os.makedirs('downloads', exist_ok=True)
-    serve(app, host="0.0.0.0", port=8080)
+    app.run(debug=True)
