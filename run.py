@@ -87,7 +87,7 @@ def uploader():
                     "SARAB SAFA": ("SARAB", "SAFA"),
                     "SABREEN FALTAT": ("SAB", "FT"),
                     "DR.KHALIFA & TECOM 1,2": ("Dr. K", "TECOM"),
-                    "PZABEEL": ("PARK ZABEEL 1,2")
+                    "PZABEEL": ("PARK ZABEEL 1", "PARK ZABEEL 2")
                 }
 
                 df_inbound_melted['TO'] = df_inbound_melted['TO'].str.strip().str.upper()
@@ -161,4 +161,4 @@ def download_file(filename):
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
     os.makedirs('downloads', exist_ok=True)
-    app.run(debug=True)
+    app.run(debug
