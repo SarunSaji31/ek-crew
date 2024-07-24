@@ -95,7 +95,7 @@ def uploader():
                 "SON": "SONBOULAH",
                 "GT": "GARHOUD TOWERS",
                 "MIT": "MILLINUM TOWER",
-                "PZABEEL": "PARK ZABEEL 1,2"
+                "PZABEEL": "PARK ZABEEL 1,2",
             }
 
             df_custom_grouped_inbound['TO'] = df_custom_grouped_inbound['TO'].apply(lambda x: '  '.join(name_mapping.get(item, item) for item in x.split(' & ')))
@@ -105,8 +105,9 @@ def uploader():
 
             tomorrows_date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d-%b')
             df_custom_grouped_inbound['DATE'] = tomorrows_date
-            df_custom_grouped_inbound['FROM'] = 'EAC-C'
-            df_final_inbound = df_custom_grouped_inbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']]
+            df_custom_grouped_inbound['FROM'] = df_custom_grouped_inbound['TO']
+            df_custom_grouped_inbound['TO'] = 'EAC-C'
+            df_final_inbound = df_custom_grouped_inbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']].sort_values(by='TIME')
             inbound_output_path = os.path.join('downloads', 'cc_trip_rearranged_inbound.xlsx')
             df_final_inbound.to_excel(inbound_output_path, index=False)
 
@@ -125,7 +126,7 @@ def uploader():
             df_custom_grouped_outbound['TIME'] = df_custom_grouped_outbound['TIME'].apply(lambda x: x.strftime('%H:%M'))
             df_custom_grouped_outbound['DATE'] = tomorrows_date
             df_custom_grouped_outbound['FROM'] = 'EAC-C'
-            df_final_outbound = df_custom_grouped_outbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']]
+            df_final_outbound = df_custom_grouped_outbound[['DATE', 'NO OF UNITS', 'TIME', 'FROM', 'TO', 'CREW']].sort_values(by='TIME')
             outbound_output_path = os.path.join('downloads', 'cc_trip_rearranged_outbound.xlsx')
             df_final_outbound.to_excel(outbound_output_path, index=False)
 
