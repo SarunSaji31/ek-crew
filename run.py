@@ -33,6 +33,12 @@ def custom_group_buildings(df, specific_groupings):
         other_buildings['NO OF UNITS'] = other_buildings['CREW'].apply(calculate_units)
         df_custom_grouped_list.extend(other_buildings.to_dict(orient='records'))
     df_custom_grouped = pd.DataFrame(df_custom_grouped_list).drop_duplicates(subset=['TIME', 'TO'])
+    
+    # Debugging outputs
+    print("Custom Grouped List:", df_custom_grouped_list)
+    print("Specific Groupings:", specific_groupings)
+    print("Dataframe after custom grouping:", df_custom_grouped)
+    
     return df_custom_grouped
 
 @app.route('/')
@@ -75,8 +81,11 @@ def uploader():
                 "EM6 TALAL QAMZI": ("Talal", "Al Qamzi", "EM6"),
                 "SARAB SAFA": ("SARAB", "SAFA"),
                 "SABREEN FALTAT": ("SAB", "FT"),
-                "DR.KHALIFA & TECOM 1,2": ("Dr. K", "TECOM")
+                "DR.KHALIFA & TECOM 1,2": ("Dr. K", "TECOM"),
+                "PZABEEL": ("PARK ZABEEL 1,2")
             }
+
+            df_inbound_melted['TO'] = df_inbound_melted['TO'].str.strip().str.upper()
 
             df_custom_grouped_inbound = custom_group_buildings(df_inbound_melted, specific_groupings)
 
@@ -95,7 +104,7 @@ def uploader():
                 "SON": "SONBOULAH",
                 "GT": "GARHOUD TOWERS",
                 "MIT": "MILLINUM TOWER",
-                "PZABEEL": "PARK ZABEEL 1,2",
+                "PZABEEL": "PARK ZABEEL 1,2"
             }
 
             df_custom_grouped_inbound['TO'] = df_custom_grouped_inbound['TO'].apply(lambda x: '  '.join(name_mapping.get(item, item) for item in x.split(' & ')))
@@ -118,6 +127,8 @@ def uploader():
                 df_outbound_melted['CREW'] = pd.to_numeric(df_outbound_melted['CREW'], errors='coerce').fillna(0)
             except KeyError as e:
                 return f"KeyError: {e}. Available columns are: {df_outbound.columns}"
+
+            df_outbound_melted['TO'] = df_outbound_melted['TO'].str.strip().str.upper()
 
             df_custom_grouped_outbound = custom_group_buildings(df_outbound_melted, specific_groupings)
             df_custom_grouped_outbound['TO'] = df_custom_grouped_outbound['TO'].apply(lambda x: '  '.join(name_mapping.get(item, item) for item in x.split(' & ')))
