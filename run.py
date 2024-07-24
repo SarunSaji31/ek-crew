@@ -95,7 +95,7 @@ def uploader():
                 "SON": "SONBOULAH",
                 "GT": "GARHOUD TOWERS",
                 "MIT": "MILLINUM TOWER",
-                "PZABEEL": "PARK ZABEEL 1,2"
+                "PZABEEL": "PARK ZABEEL 1,2",
             }
 
             df_custom_grouped_inbound['TO'] = df_custom_grouped_inbound['TO'].apply(lambda x: '  '.join(name_mapping.get(item, item) for item in x.split(' & ')))
